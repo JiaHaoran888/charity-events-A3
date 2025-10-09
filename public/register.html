@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Register for Event - CityCare</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body ng-app="charityApp" ng-controller="RegisterCtrl as vm">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="/assets/placeholder.jpg" alt="logo" class="logo">
+        <div>
+          <h1>CityCare Events</h1>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/search.html">Search Events</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="event-info" class="card" ng-if="event">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <img ng-src="{{event.image_url || '/assets/placeholder.jpg'}}" alt="{{event.name}}" style="width:200px;height:120px;object-fit:cover;border-radius:8px">
+        <div style="flex:1">
+          <h3>{{event.name}}</h3>
+          <p class="muted">{{event.category}} · {{event.location}} · {{event.event_date | date:'medium'}}</p>
+          <p style="margin-top:8px">{{event.short_description}}</p>
+          <div style="margin-top:8px"><strong>Price:</strong> {{event.price == 0 ? 'Free' : ('$' + (event.price|number:2))}}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>Register</h2>
+      <form id="reg-form" name="regForm" ng-submit="submit()" novalidate>
+        <style>
+          .reg-grid{display:grid;grid-template-columns:160px 1fr;gap:12px 18px;align-items:center}
+          .reg-grid label{justify-self:end;padding-right:8px;color:var(--muted);font-size:14px}
+          .reg-grid input,.reg-grid textarea,.reg-grid select{width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff}
+          .reg-grid textarea{min-height:80px;resize:vertical}
+          .form-actions{grid-column:1/3;display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+          .form-actions .button{min-width:140px}
+          .dialog-detail{margin-top:8px;color:var(--muted);font-size:14px}
+          @media (max-width:720px){ .reg-grid{grid-template-columns:1fr; } .reg-grid label{justify-self:start} .form-actions{justify-content:flex-start} }
+        </style>
+        <div class="reg-grid">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" ng-model="form.name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" ng-model="form.email" required>
+
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" ng-model="form.phone">
+
+          <label for="tickets">Number of tickets</label>
+          <input type="number" id="tickets" name="tickets" ng-model="form.tickets" min="1" required>
+
+          <div></div>
+          <div class="form-actions">
+            <button type="submit" class="button" ng-disabled="regForm.$invalid">Submit Registration</button>
+            <button type="button" id="cancel" class="button muted" ng-click="cancel()">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="modal" ng-class="{'show': message || error}" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div class="modal-content">
+      <button class="modal-close" ng-click="message=''; error='';">×</button>
+      <div id="modal-body">
+        <div ng-if="message">
+          <h3 id="dialog-title">Registration Successful</h3>
+          <p>{{message}}</p>
+          <div class="dialog-detail">
+            <div ng-if="form.name"><strong>Name:</strong> {{form.name}}</div>
+            <div ng-if="form.email"><strong>Email:</strong> {{form.email}}</div>
+            <div ng-if="form.tickets"><strong>Tickets:</strong> {{form.tickets}}</div>
+            <div ng-if="event && event.name"><strong>Event:</strong> {{event.name}}</div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
+            <button class="button" ng-click="message=''; if(event && event.id) window.location.href='/event.html?id='+event.id">OK</button>
+          </div>
+        </div>
+        <div ng-if="error">
+          <h3 id="dialog-title">Registration Failed</h3>
+          <p>{{error}}</p>
+          <div class="dialog-detail">
+            <div ng-if="form.name"><strong>Name:</strong> {{form.name}}</div>
+            <div ng-if="form.email"><strong>Email:</strong> {{form.email}}</div>
+            <div ng-if="form.tickets"><strong>Tickets:</strong> {{form.tickets}}</div>
+            <div ng-if="event && event.name"><strong>Event:</strong> {{event.name}}</div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
+            <button class="button" ng-click="error='';">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 CityCare Foundation</p>
+    </div>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="/js/client-app.js"></script>
+</body>
+</html>
