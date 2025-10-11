@@ -100,7 +100,7 @@ app.get('/api/events/:id', async (req, res) => {
     event.progress = event.goal_amount && event.goal_amount > 0 ? Math.min(100, (event.raised_amount / event.goal_amount) * 100) : 0;
     res.json(event);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Server error',req });
   }
 });
 
@@ -256,4 +256,3 @@ const server = app.listen(PORT, () => {
     openUrl(url);
   } catch (e) {}
 });
-
