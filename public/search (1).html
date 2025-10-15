@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Search Events - CityCare</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body ng-app="charityApp" ng-controller="SearchCtrl as vm">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="/assets/placeholder.jpg" alt="logo" class="logo">
+        <div>
+          <h1>CityCare Events</h1>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/search.html">Search Events</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container search-page">
+    <section class="search-panel card" ng-submit="search()">
+      <h2>Find Events</h2>
+      <form id="search-form" ng-submit="search()">
+        <div class="form-row">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" ng-model="form.date">
+        </div>
+        <div class="form-row">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="location" placeholder="City, venue or area" ng-model="form.location">
+        </div>
+        <div class="form-row">
+          <label for="category">Category</label>
+          <select id="category" name="category" ng-model="form.category" ng-options="c.id as c.name for c in categories">
+            <option value="">Any</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button">Search</button>
+          <button type="button" id="clear" class="button muted" ng-click="clear()">Clear Filters</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="results card">
+      <h2>Results</h2>
+      <div id="results" class="grid">
+        <a class="event-card card" ng-repeat="item in results" ng-href="/event.html?id={{item.id}}">
+          <img ng-src="{{item.image_url || '/assets/placeholder.jpg'}}" alt="{{item.name}}">
+          <div class="meta">
+            <h4>{{item.name}}</h4>
+            <p class="muted">{{item.location}} · {{item.event_date | date:'mediumDate'}}</p>
+            <div class="row">
+              <span class="badge">{{item.category}}</span>
+              <span class="badge">{{item.price == 0 ? 'Free' : ('$' + (item.price|number:2))}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div id="no-results" class="no-results" ng-show="noResults">No events found. Try adjusting filters.</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 CityCare Foundation</p>
+    </div>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="/js/client-app.js"></script>
+</body>
+</html>
