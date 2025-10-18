@@ -248,7 +248,7 @@ function openUrl(url) {
   }
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const server = app.listen(PORT, () => {
   const url = `http://localhost:${PORT}/`;
   console.log(`Server listening at ${url}`);
@@ -256,3 +256,4 @@ const server = app.listen(PORT, () => {
     openUrl(url);
   } catch (e) {}
 });
+
